@@ -27,4 +27,10 @@ class LoginController extends Controller
             return back()->with('loginError', 'Login gagal! Silakan coba lagi.');
         }
     }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('login');
+    }
 }

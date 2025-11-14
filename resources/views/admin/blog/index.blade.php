@@ -18,6 +18,7 @@
             <thead style="background-color: #f3f1ff; color: #4b49ac;">
                 <tr>
                     <th>No</th>
+                    <th>Photo</th>
                     <th>Category</th>
                     <th>Title</th>
                     <th>Content</th>
@@ -28,6 +29,9 @@
                 @foreach($datas as $key => $data)
                     <tr>
                         <td>{{ $key + 1 }}</td>
+                        <td>
+                            <img src="{{ asset('storage/'.$data->photo) }}" alt="{{ $data->title }}" width="100">
+                        </td>
                         <td>{{ $data->category->name }}</td>
                         <td>{{ $data->title }}</td>
                         <td>{{ $data->content }}</td>

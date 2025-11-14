@@ -15,6 +15,9 @@ class Blog extends Model
         'title',
         'slug',
         'content',
+        'photo',
+        'writer',
+        'status',
     ];
 
     // Relasi ke tabel categories

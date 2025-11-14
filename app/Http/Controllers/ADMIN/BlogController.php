@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\Blog;
 use App\Models\Categories;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\File;
 
 class BlogController extends Controller
 {
@@ -29,14 +30,22 @@ class BlogController extends Controller
 
     public function store(Request $request)
     {
-        Blog::create([
+        $data =[
             'category_id' => $request->category_id,
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'content' => $request->content,
-        ]);
+            'status' => $request->status,
+            'writer' => auth()->user()->name,
+        ];
 
-        Alert::success('Success', 'Blog baru berhasil dibuat!');
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo')->store('blog', 'public');
+            $data['photo'] = $photo;
+        }
+        Blog::create($data);
+
+        Alert::success('Success', 'Create New Blog Successfully!');
         return redirect()->to('admin/blog');
     }
 
@@ -51,18 +60,32 @@ class BlogController extends Controller
     public function update(Request $request, $id)
     {
         $update = Blog::find($id);
-        $update->category_id = $request->category_id;
-        $update->title = $request->title;
-        $update->slug = Str::slug($request->title);
-        $update->content = $request->content;
-        $update->save();
+         $data =[
+            'category_id' => $request->category_id,
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'content' => $request->content,
+            'status' => $request->status,
+            'writer' => auth()->user()->name,
+        ];
+        if ($request->hasFile('photo')) {
+            if ($update->photo) {
+                File::delete(public_path('storage/' . $update->photo));
+            }
+            $photo = $request->file('photo')->store('blog', 'public');
+            $data['photo'] = $photo;
+        }
 
+        $update->update($data);
+        Alert::success('Success', 'Update Blog Successfully!');
         return redirect()->to('admin/blog');
     }
 
     public function destroy($id)
     {
-        Blog::find($id)->delete();
+        $delete= Blog::find($id)->delete();
+        File::delete(public_path('storage/' . $update->photo));
+        Alert::success('Success', 'Delete Blog Successfully!');
         return redirect()->to('admin/blog');
     }
 }

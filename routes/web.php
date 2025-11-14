@@ -1,5 +1,6 @@
     <?php
 
+    use App\Http\Controllers\HomeController;
     use App\Http\Controllers\LoginController;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\ADMIN\CategoryController;
@@ -18,10 +19,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', [LoginController::class, 'index']);
+Route::get('/', [HomeController::class, 'index']);
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('action-login', [LoginController::class, 'action'])->name('action-login');
 Route::get('sign-out', [\App\Http\Controllers\LoginController::class, 'logout'])->name('sign-out');
+
 
 //awalan di depan buat pake routenya
 Route::prefix('admin')->group(function(){

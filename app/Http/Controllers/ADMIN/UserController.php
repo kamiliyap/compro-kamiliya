@@ -71,8 +71,9 @@ class UserController extends Controller
     {
         $edit=User::find($id);
         $title="Edit User";
+                 Alert::success('Success Title', 'Edit User Success Message');
         return view('admin.user.edit', compact('edit', 'title'));
-         Alert::success('Success Title', 'Edit User Success Message');
+
     }
 
     /**
